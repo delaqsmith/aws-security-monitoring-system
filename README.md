@@ -102,8 +102,6 @@ The secret contained nonproduction test information and was used to generate con
 
 Monitoring access to secrets is important because unauthorized retrieval of credentials may indicate compromised identities, excessive permissions, or suspicious activity within a cloud environment.
 
-<img width="1897" height="520" alt="image" src="https://github.com/user-attachments/assets/30d7743d-fb47-49f4-bc0d-a7ca4250796f" />
-
 
 ---
 
@@ -134,10 +132,6 @@ Both read and write API activity were included to provide visibility into releva
 
 Log file validation was also enabled to support verification of log integrity.
 
-**📸 Screenshot Placeholder**
-
-![CloudTrail Configuration](screenshots/02-cloudtrail-configuration.png)
-
 ---
 
 ### Step 3: Generating and Investigating Secret Access Events
@@ -159,7 +153,6 @@ aws secretsmanager get-secret-value \
   --secret-id "TopSecretInfo" \
   --region <aws-region>
 ```
-<img width="1913" height="492" alt="image" src="https://github.com/user-attachments/assets/2bce199a-471b-4a64-8e67-dd654c1270aa" />
 
 This allowed me to verify that CloudTrail could capture secret access originating from different interfaces.
 
@@ -186,10 +179,6 @@ The recorded events provided information useful for security investigations, inc
 **Result: PASS**
 
 CloudTrail successfully recorded the secret access activity, establishing an audit trail for the monitored resource.
-
-**📸 Screenshot Placeholder**
-
-![CloudTrail Secret Access Events](screenshots/03-secret-access-events.png)
 
 ---
 
@@ -221,10 +210,6 @@ I confirmed that CloudTrail events were being delivered and were available for a
 **Result: PASS**
 
 CloudTrail successfully forwarded security events to CloudWatch Logs.
-
-**📸 Screenshot Placeholder**
-
-![CloudWatch Log Ingestion](screenshots/04-cloudwatch-logs.png)
 
 ---
 
@@ -264,10 +249,6 @@ This converts raw API activity into a measurable security signal.
 
 **Detection Limitation:** The initial filter detects the `GetSecretValue` operation across the monitored logs rather than restricting matches to one specific secret. It is useful for demonstrating secret access monitoring but would require additional filtering for more targeted production detection.
 
-**📸 Screenshot Placeholder**
-
-![CloudWatch Metric Filter](screenshots/05-metric-filter.png)
-
 ---
 
 ### Step 6: Configuring a CloudWatch Alarm
@@ -294,10 +275,6 @@ The alarm was designed to transition into the `ALARM` state when the metric met 
 During testing, I discovered that the initial alarm configuration did not produce the expected notification.
 
 This led to additional investigation and changes to the alarm's metric evaluation settings.
-
-**📸 Screenshot Placeholder**
-
-![CloudWatch Alarm Configuration](screenshots/06-cloudwatch-alarm.png)
 
 ---
 
@@ -329,9 +306,6 @@ After creating the subscription, I verified the email address using the AWS subs
 
 This step was necessary because SNS does not deliver topic notifications to an email endpoint until its subscription is confirmed.
 
-**📸 Screenshot Placeholder**
-
-![SNS Subscription](screenshots/07-sns-subscription.png)
 
 ---
 
@@ -396,8 +370,6 @@ The filter should identify events containing `GetSecretValue` while ignoring rec
 
 The metric filter successfully identified matching secret retrieval events in the test data.
 
-![Metric Filter Testing](screenshots/08-filter-testing.png)
-
 ---
 
 ### Test 4: Alarm Notification Testing
@@ -450,12 +422,6 @@ I then monitored the CloudWatch alarm and checked the subscribed email inbox.
 **Result: PASS**
 
 The corrected monitoring pipeline successfully detected secret retrieval activity, transitioned the alarm into the `ALARM` state, and delivered an email notification.
-
-**📸 Screenshot Placeholders**
-
-![CloudWatch Alarm Triggered](screenshots/09-alarm-triggered.png)
-
-![Email Notification](screenshots/10-email-notification.png)
 
 ---
 
